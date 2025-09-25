@@ -1,14 +1,15 @@
 #!/bin/bash
-#Finance Budgeting
+#Finance Budgeting System
 
-balance=1000
-expenses=100
+balance=0
+expenses=0
 
 display_menu(){
-    echo "Finance Budgeting"
+    echo "Finance Budgeting System"
     echo "1. View Balance"
-    echo "2. Add Expense"
-    echo "3. Quit"
+    echo "2. Add Income"
+    echo "3. Add Expense"
+    echo "4. Quit"
     echo -n "Enter Your Choice: "
 }
 
@@ -19,10 +20,19 @@ add_expense() {
     balance=$((balance - amount))
     echo "Expense added successfully."
   else
-    echo "Invalid input. Please enter a valid amount."
+    echo "Invalid. Please enter a valid amount."
   fi
 }
 
+add_income(){
+  read -p "Enter your income: " amount
+    if [[ $amount =~ ^[0-9]+$ ]]; then
+    balance=$((balance + amount))
+    echo "Income added successfully."
+  else
+    echo "Invalid. Please enter a valid amount."
+  fi
+}
 
 while true; do
   display_menu
@@ -32,9 +42,12 @@ while true; do
       echo "Current Balance: $balance"
       ;;
     2)
-      add_expense
+      add_income
       ;;
     3)
+      add_expense
+      ;;
+    4)
       echo "Goodbye!"
       exit 0
       ;;
