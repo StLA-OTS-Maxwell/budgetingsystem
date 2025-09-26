@@ -1,2 +1,2 @@
 # financebudgeting
-Script for Finance Budgeting System
+This project is a Personal Finance Budgeting System.
