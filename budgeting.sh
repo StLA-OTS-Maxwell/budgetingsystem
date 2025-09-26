@@ -1,11 +1,11 @@
 #!/bin/bash
-#Finance Budgeting System
+#Personal Budgeting System
 
 balance=0
 expenses=0
 
 display_menu(){
-    echo "Finance Budgeting System"
+    echo "Personal Budgeting System"
     echo "1. View Balance"
     echo "2. Add Income"
     echo "3. Add Expense"
