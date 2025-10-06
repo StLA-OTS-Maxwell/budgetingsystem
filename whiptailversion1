@@ -11,11 +11,11 @@ display_menu(){
     expenses=0.00
 
     display_menu(){
-      CHOICE=$(whiptail --clear --title "Personal Budgeting System" --menu "Choose an option:" 15 60 4 \
+      CHOICE=$(whiptail --clear --title "Personal Budgeting System" --menu "Choose an option:" \
         "1" "View Balance" \
         "2" "Add Income" \
         "3" "Add Expense" \
-        "4" "Quit" 3>&1 1>&2 2>&3)
+        "4" "Quit" )
       echo "$CHOICE"
     }
 
@@ -24,7 +24,7 @@ display_menu(){
     }
 
     add_expense() {
-      amount=$(whiptail --inputbox "Enter the expense amount:" 8 50 3>&1 1>&2 2>&3)
+      amount=$(whiptail --inputbox "Enter the expense amount:" )
       ret=$?
       if [ $ret -ne 0 ]; then
         return
@@ -34,21 +34,21 @@ display_menu(){
         balance=$(awk "BEGIN{printf \"%.2f\", $balance - $amount}")
         whiptail --msgbox "Expense added successfully." 6 50
       else
-        whiptail --msgbox "Invalid amount. Please enter a positive number." 6 50
+        whiptail --msgbox "Invalid amount. Please enter a positive number." 
       fi
     }
 
     add_income(){
-      amount=$(whiptail --inputbox "Enter your income amount:" 8 50 3>&1 1>&2 2>&3)
+      amount=$(whiptail --inputbox "Enter your income amount:" )
       ret=$?
       if [ $ret -ne 0 ]; then
         return
       fi
       if is_number "$amount"; then
         balance=$(awk "BEGIN{printf \"%.2f\", $balance + $amount}")
-        whiptail --msgbox "Income added successfully." 6 50
+        whiptail --msgbox "Income added successfully." 
       else
-        whiptail --msgbox "Invalid amount. Please enter a positive number." 6 50
+        whiptail --msgbox "Invalid amount. Please enter a positive number." 
       fi
     }
 
@@ -56,7 +56,7 @@ display_menu(){
       choice=$(display_menu)
       case $choice in
         1)
-          whiptail --msgbox "Current Balance: $balance\nTotal Expenses: $expenses" 8 60
+          whiptail --msgbox "Current Balance: $balance\nTotal Expenses: $expenses"
           ;;
         2)
           add_income
@@ -65,12 +65,12 @@ display_menu(){
           add_expense
           ;;
         4)
-          whiptail --msgbox "Goodbye!" 6 40
+          whiptail --msgbox "Goodbye!"
           clear
           exit 0
           ;;
         *)
-          whiptail --msgbox "Invalid choice. Please select a valid option." 6 50
+          whiptail --msgbox "Invalid choice. Please select a valid option."
           ;;
       esac
     done
