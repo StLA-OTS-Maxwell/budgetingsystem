@@ -32,7 +32,7 @@ display_menu(){
       if is_number "$amount"; then
         expenses=$(awk "BEGIN{printf \"%.2f\", $expenses + $amount}")
         balance=$(awk "BEGIN{printf \"%.2f\", $balance - $amount}")
-        whiptail --msgbox "Expense added successfully." 6 50
+        whiptail --msgbox "Expense added successfully."
       else
         whiptail --msgbox "Invalid amount. Please enter a positive number." 
       fi
