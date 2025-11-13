@@ -1,58 +1,77 @@
 #!/bin/bash
-#Personal Budgeting System
+#Whiptail Test
 
-balance=0
-expenses=0
+whiptail --msgbox "This is a Budgeting System created with Whiptail." 10 40
 
-display_menu(){
-    echo "Personal Budgeting System"
-    echo "1. View Balance"
-    echo "2. Add Income"
-    echo "3. Add Expense"
-    echo "4. Quit"
-    echo -n "Enter Your Choice: "
-}
 
-add_expense() {
-  read -p "Enter the expense amount: " amount
-  if [[ $amount =~ ^[0-9]+$ ]]; then
-    expenses=$((expenses + amount))
-    balance=$((balance - amount))
-    echo "Expense added successfully."
-  else
-    echo "Invalid. Please enter a valid amount."
-  fi
-}
-
-add_income(){
-  read -p "Enter your income: " amount
-    if [[ $amount =~ ^[0-9]+$ ]]; then
-    balance=$((balance + amount))
-    echo "Income added successfully."
-  else
-    echo "Invalid. Please enter a valid amount."
-  fi
-}
+income=${income:-0}
+expenses=${expenses:-0}
+balance=${balance:-0}
 
 while true; do
-  display_menu
-  read choice
-  case $choice in
-    1)
-      echo "Current Balance: $balance"
-      ;;
-    2)
-      add_income
-      ;;
-    3)
-      add_expense
-      ;;
-    4)
-      echo "Goodbye!"
-      exit 0
-      ;;
-    *)
-      echo "Invalid choice. Please select a valid option."
-      ;;
-  esac
+    option=$(whiptail --title "Main Menu" --menu "Choose an option:" 15 50 4 \
+    "1" "View Balance" \
+    "2" "Add Income" \
+    "3" "Add Expense" \
+    "4" "Exit" 3>&1 1>&2 2>&3)
+    status=$?
+    
+    if [ $status -ne 0 ]; then
+        whiptail --msgbox "Cancelled. Exiting." 8 40
+        exit 0
+    fi
+
+  
+    case $option in
+        1)
+            # Show current balance
+            whiptail --msgbox "Current Balance: $balance" 8 40
+            ;;
+
+        2)
+            #Income Amount
+            amount=$(whiptail --inputbox "Enter the income amount:" 8 40 3>&1 1>&2 2>&3)
+            exitstatus=$?
+            if [ $exitstatus -eq 0 ]; then
+                if [[ $amount =~ ^[0-9]+$ ]]; then
+                    income=${income:-0}
+                    balance=${balance:-0}
+                    income=$((income + amount))
+                    balance=$((balance + amount))
+                    whiptail --msgbox "Income added successfully.\nNew balance: $balance" 8 40
+                else
+                    whiptail --msgbox "Invalid amount. Please enter a valid number." 8 40
+                fi
+            else
+                whiptail --msgbox "Cancelled." 8 40
+            fi
+            ;;
+
+        3)
+            # Expense Amount
+            amount=$(whiptail --inputbox "Enter the expense amount:" 8 40 3>&1 1>&2 2>&3)
+            exitstatus=$?
+            if [ $exitstatus -eq 0 ]; then
+                if [[ $amount =~ ^[0-9]+$ ]]; then
+                    expenses=${expenses:-0}
+                    balance=${balance:-0}
+                    expenses=$((expenses + amount))
+                    balance=$((balance - amount))
+                    whiptail --msgbox "Expense added successfully.\nNew balance: $balance" 8 40
+                else
+                    whiptail --msgbox "Invalid amount. Please enter a valid number." 8 40
+                fi
+            else
+                whiptail --msgbox "Cancelled." 8 40
+            fi
+            ;;
+
+        4)
+            whiptail --msgbox "Exiting..." 8 40
+            exit 0
+            ;;
+        *)
+            whiptail --msgbox "Invalid option." 8 40
+            ;;
+    esac
 done
